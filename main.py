@@ -1,224 +1,143 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import mysql.connector
-from mysql.connector import Error
+from mysql.connector import connect, Error
+
 
 class StudentManagementSystem:
     def __init__(self, root):
         self.root = root
         self.root.title("Student Management System")
         self.root.geometry("800x600")
+        self.root.configure(bg="#ffffff")
 
-        # Database Connection
+        # Set transparent background
+        self.root.attributes("-transparentcolor", "#ffffff")
+
+        # Database connection
         try:
-            self.connection = mysql.connector.connect(
+            self.connection = connect(
                 host="localhost",
-                user="root",
-                password="Your_Password",
+                user="your_username",
+                password="your_password",
                 database="studentms"
             )
             self.cursor = self.connection.cursor()
         except Error as e:
-            print("Error occurred while connecting to database:", e)
+            print("Error connecting to database:", e)
             messagebox.showerror("Error", "Failed to connect to database")
-            root.destroy()
 
-        # Student Management System UI
-        self.Roll_No_var = tk.StringVar()
-        self.name_var = tk.StringVar()
-        self.email_var = tk.StringVar()
-        self.gender_var = tk.StringVar()
-        self.contact_var = tk.StringVar()
-        self.dob_var = tk.StringVar()
+        # Login Page
+        self.login_frame = tk.Frame(self.root, bg="#ffffff")
+        self.login_frame.pack(fill=tk.BOTH, expand=True)
 
-        title_label = tk.Label(self.root, text="Student Management System", font=("Arial", 20, "bold"), bg="yellow", fg="black")
-        title_label.pack(side=tk.TOP, fill=tk.X)
+        login_label = tk.Label(self.login_frame, text="Login", font=("Arial", 20, "bold"), bg="#ffffff")
+        login_label.pack(pady=20)
 
-        # Student Details Frame
-        details_frame = tk.Frame(self.root, bd=4, relief=tk.RIDGE, bg="light blue")  # Change background color here
-        details_frame.place(x=20, y=60, width=750, height=300)
+        username_label = tk.Label(self.login_frame, text="Username:", font=("Arial", 14), bg="#ffffff")
+        username_label.pack()
+        self.username_entry = tk.Entry(self.login_frame, font=("Arial", 14))
+        self.username_entry.pack(pady=5)
 
-        details_label = tk.Label(details_frame, text="Student Details", font=("Arial", 14, "bold"), bg="light blue", fg="blue")  # Change background and foreground color here
-        details_label.grid(row=0, columnspan=2, pady=10)
+        password_label = tk.Label(self.login_frame, text="Password:", font=("Arial", 14), bg="#ffffff")
+        password_label.pack()
+        self.password_entry = tk.Entry(self.login_frame, show="*", font=("Arial", 14))
+        self.password_entry.pack(pady=5)
 
-        roll_no_label = tk.Label(details_frame, text="Roll No.", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        roll_no_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        login_button = tk.Button(self.login_frame, text="Login", font=("Arial", 14), command=self.login,
+                                 bd=0, relief=tk.RAISED, bg="#2ecc71", fg="#ffffff", padx=10, pady=5)
+        login_button.pack(pady=10)
 
-        roll_no_entry = tk.Entry(details_frame, textvariable=self.Roll_No_var, font=("Arial", 12), bd=2, relief=tk.GROOVE)
-        roll_no_entry.grid(row=1, column=1, padx=10, pady=5)
+        create_account_button = tk.Button(self.login_frame, text="Create New Account", font=("Arial", 12),
+                                          command=self.show_signup_page, bd=0, relief=tk.RAISED, bg="#3498db",
+                                          fg="#ffffff", padx=10, pady=5)
+        create_account_button.pack()
 
-        name_label = tk.Label(details_frame, text="Name", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        name_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        # Signup Page
+        self.signup_frame = tk.Frame(self.root, bg="#ffffff")
 
-        name_entry = tk.Entry(details_frame, textvariable=self.name_var, font=("Arial", 12), bd=2, relief=tk.GROOVE)
-        name_entry.grid(row=2, column=1, padx=10, pady=5)
+        name_label = tk.Label(self.signup_frame, text="Name:", font=("Arial", 14), bg="#ffffff")
+        name_label.pack()
+        self.name_entry = tk.Entry(self.signup_frame, font=("Arial", 14))
+        self.name_entry.pack(pady=5)
 
-        email_label = tk.Label(details_frame, text="Email", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        email_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+        signup_username_label = tk.Label(self.signup_frame, text="Username:", font=("Arial", 14), bg="#ffffff")
+        signup_username_label.pack()
+        self.signup_username_entry = tk.Entry(self.signup_frame, font=("Arial", 14))
+        self.signup_username_entry.pack(pady=5)
 
-        email_entry = tk.Entry(details_frame, textvariable=self.email_var, font=("Arial", 12), bd=2, relief=tk.GROOVE)
-        email_entry.grid(row=3, column=1, padx=10, pady=5)
+        signup_password_label = tk.Label(self.signup_frame, text="Password:", font=("Arial", 14), bg="#ffffff")
+        signup_password_label.pack()
+        self.signup_password_entry = tk.Entry(self.signup_frame, show="*", font=("Arial", 14))
+        self.signup_password_entry.pack(pady=5)
 
-        gender_label = tk.Label(details_frame, text="Gender", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        gender_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
+        signup_button = tk.Button(self.signup_frame, text="Signup", font=("Arial", 14), command=self.signup,
+                                  bd=0, relief=tk.RAISED, bg="#2ecc71", fg="#ffffff", padx=10, pady=5)
+        signup_button.pack(pady=10)
 
-        gender_combo = ttk.Combobox(details_frame, textvariable=self.gender_var, font=("Arial", 12), state="readonly")
-        gender_combo["values"] = ("Male", "Female", "Other")
-        gender_combo.grid(row=4, column=1, padx=10, pady=5)
+        go_to_login_button = tk.Button(self.signup_frame, text="Go to Login Page", font=("Arial", 12),
+                                       command=self.show_login_page, bd=0, relief=tk.RAISED, bg="#3498db",
+                                       fg="#ffffff", padx=10, pady=5)
+        go_to_login_button.pack()
 
-        contact_label = tk.Label(details_frame, text="Contact", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        contact_label.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+        self.show_login_page()
 
-        contact_entry = tk.Entry(details_frame, textvariable=self.contact_var, font=("Arial", 12), bd=2, relief=tk.GROOVE)
-        contact_entry.grid(row=1, column=3, padx=10, pady=5)
+    def login(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
 
-        dob_label = tk.Label(details_frame, text="Date of Birth", font=("Arial", 12), bg="light blue", fg="black")  # Change background and foreground color here
-        dob_label.grid(row=2, column=2, padx=10, pady=5, sticky="w")
-
-        dob_entry = tk.Entry(details_frame, textvariable=self.dob_var, font=("Arial", 12), bd=2, relief=tk.GROOVE)
-        dob_entry.grid(row=2, column=3, padx=10, pady=5)
-
-        add_btn = tk.Button(details_frame, text="Add", font=("Arial", 12, "bold"), bg="green", fg="white", command=self.add_students)  # Change background and foreground color here
-        add_btn.grid(row=5, column=0, padx=10, pady=5)
-
-        update_btn = tk.Button(details_frame, text="Update", font=("Arial", 12, "bold"), bg="blue", fg="white", command=self.update_students)  # Change background and foreground color here
-        update_btn.grid(row=5, column=1, padx=10, pady=5)
-
-        delete_btn = tk.Button(details_frame, text="Delete", font=("Arial", 12, "bold"), bg="red", fg="white", command=self.delete_students)  # Change background and foreground color here
-        delete_btn.grid(row=5, column=2, padx=10, pady=5)
-
-        clear_btn = tk.Button(details_frame, text="Clear", font=("Arial", 12, "bold"), bg="orange", fg="black", command=self.clear_entries)  # Change background and foreground color here
-        clear_btn.grid(row=5, column=3, padx=10, pady=5)
-
-        # Student Table Frame
-        table_frame = tk.Frame(self.root, bd=4, relief=tk.RIDGE)
-        table_frame.place(x=20, y=370, width=750, height=200)
-
-        scroll_x = tk.Scrollbar(table_frame, orient=tk.HORIZONTAL)
-        scroll_y = tk.Scrollbar(table_frame, orient=tk.VERTICAL)
-
-        self.student_table = ttk.Treeview(table_frame, columns=("Roll No.", "Name", "Email", "Gender", "Contact", "DOB"),
-                                          xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
-        scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
-        scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
-        scroll_x.config(command=self.student_table.xview)
-        scroll_y.config(command=self.student_table.yview)
-
-        self.student_table.heading("Roll No.", text="Roll No.")
-        self.student_table.heading("Name", text="Name")
-        self.student_table.heading("Email", text="Email")
-        self.student_table.heading("Gender", text="Gender")
-        self.student_table.heading("Contact", text="Contact")
-        self.student_table.heading("DOB", text="DOB")
-        self.student_table["show"] = "headings"
-
-        self.student_table.column("Roll No.", width=100)
-        self.student_table.column("Name", width=150)
-        self.student_table.column("Email", width=200)
-        self.student_table.column("Gender", width=100)
-        self.student_table.column("Contact", width=100)
-        self.student_table.column("DOB", width=100)
-
-        self.student_table.pack(fill=tk.BOTH, expand=1)
-        self.student_table.bind("<ButtonRelease-1>", self.get_selected_row)
-
-        self.display_students()
-
-    def add_students(self):
-        roll_no = self.Roll_No_var.get()
-        name = self.name_var.get()
-        email = self.email_var.get()
-        gender = self.gender_var.get()
-        contact = self.contact_var.get()
-        dob = self.dob_var.get()
-
-        if roll_no == "" or name == "":
-            messagebox.showerror("Error", "Roll No. and Name are required fields")
-        else:
-            try:
-                self.cursor.execute("INSERT INTO students (roll_no, name, email, gender, contact, dob) VALUES (%s, %s, %s, %s, %s, %s)",
-                                    (roll_no, name, email, gender, contact, dob))
-                self.connection.commit()
-                messagebox.showinfo("Success", "Record added successfully")
-                self.clear_entries()
-                self.display_students()
-            except Error as e:
-                print("Error occurred while adding student:", e)
-                messagebox.showerror("Error", "Failed to add student")
-
-    def update_students(self):
-        roll_no = self.Roll_No_var.get()
-        name = self.name_var.get()
-        email = self.email_var.get()
-        gender = self.gender_var.get()
-        contact = self.contact_var.get()
-        dob = self.dob_var.get()
-
-        if roll_no == "":
-            messagebox.showerror("Error", "Please select a student from the table to update")
-        else:
-            try:
-                self.cursor.execute("UPDATE students SET name=%s, email=%s, gender=%s, contact=%s, dob=%s WHERE roll_no=%s",
-                                    (name, email, gender, contact, dob, roll_no))
-                self.connection.commit()
-                messagebox.showinfo("Success", "Record updated successfully")
-                self.clear_entries()
-                self.display_students()
-            except Error as e:
-                print("Error occurred while updating student:", e)
-                messagebox.showerror("Error", "Failed to update student")
-
-    def delete_students(self):
-        roll_no = self.Roll_No_var.get()
-
-        if roll_no == "":
-            messagebox.showerror("Error", "Please select a student from the table to delete")
-        else:
-            confirmation = messagebox.askyesno("Confirmation", "Do you want to delete this student?")
-            if confirmation == 1:
-                try:
-                    self.cursor.execute("DELETE FROM students WHERE roll_no=%s", (roll_no,))
-                    self.connection.commit()
-                    messagebox.showinfo("Success", "Record deleted successfully")
-                    self.clear_entries()
-                    self.display_students()
-                except Error as e:
-                    print("Error occurred while deleting student:", e)
-                    messagebox.showerror("Error", "Failed to delete student")
-
-    def clear_entries(self):
-        self.Roll_No_var.set("")
-        self.name_var.set("")
-        self.email_var.set("")
-        self.gender_var.set("")
-        self.contact_var.set("")
-        self.dob_var.set("")
-
-    def display_students(self):
         try:
-            self.cursor.execute("SELECT * FROM students")
-            rows = self.cursor.fetchall()
-            self.student_table.delete(*self.student_table.get_children())
-            for row in rows:
-                self.student_table.insert("", tk.END, values=row)
+            self.cursor.execute("SELECT * FROM login_Cred WHERE username=%s AND password=%s", (username, password))
+            user = self.cursor.fetchone()
+            if user:
+                messagebox.showinfo("Success", "Login Successful")
+                self.clear_login_fields()
+            else:
+                messagebox.showerror("Error", "Invalid username or password")
         except Error as e:
-            print("Error occurred while fetching students:", e)
-            messagebox.showerror("Error", "Failed to fetch students")
+            print("Error executing query:", e)
+            messagebox.showerror("Error", "Failed to execute query")
 
-    def get_selected_row(self, event):
+    def signup(self):
+        name = self.name_entry.get()
+        username = self.signup_username_entry.get()
+        password = self.signup_password_entry.get()
+
         try:
-            row = self.student_table.focus()
-            content = self.student_table.item(row)
-            row = content["values"]
-            self.Roll_No_var.set(row[0])
-            self.name_var.set(row[1])
-            self.email_var.set(row[2])
-            self.gender_var.set(row[3])
-            self.contact_var.set(row[4])
-            self.dob_var.set(row[5])
-        except IndexError:
-            pass
+            self.cursor.execute("INSERT INTO login_Cred (name, username, password) VALUES (%s, %s, %s)",
+                                (name, username, password))
+            self.connection.commit()
+            messagebox.showinfo("Success", "Signup Successful")
+            self.show_login_page()
+            self.clear_signup_fields()
+        except Error as e:
+            print("Error executing query:", e)
+            messagebox.showerror("Error", "Failed to execute query")
 
-root = tk.Tk()
-obj = StudentManagementSystem(root)
-root.mainloop()
+    def show_signup_page(self):
+        self.clear_login_fields()
+        self.login_frame.pack_forget()
+        self.signup_frame.pack(fill=tk.BOTH, expand=True)
+
+    def show_login_page(self):
+        self.clear_signup_fields()
+        self.signup_frame.pack_forget()
+        self.login_frame.pack(fill=tk.BOTH, expand=True)
+
+    def clear_login_fields(self):
+        self.username_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)
+
+    def clear_signup_fields(self):
+        self.name_entry.delete(0, tk.END)
+        self.signup_username_entry.delete(0, tk.END)
+        self.signup_password_entry.delete(0, tk.END)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.overrideredirect(True)
+    root.geometry("800x600")
+    root.attributes("-transparentcolor", "#ffffff")
+    root.configure(bg="#ffffff")
+    app = StudentManagementSystem(root)
+    root.mainloop()
