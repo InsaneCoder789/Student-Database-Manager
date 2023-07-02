@@ -27,49 +27,49 @@ class StudentManagementSystem:
         self.title.pack(pady=20)
 
         self.manage_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.manage_frame.place(x=20, y=100, width=450, height=380)
+        self.manage_frame.place(x=20, y=100, width=450, height=500)
 
-        self.manage_title = tk.Label(self.manage_frame, text="Manage Students", font=("bold", 14))
+        self.manage_title = tk.Label(self.manage_frame, text="Manage Students", font=("bold", 20))
         self.manage_title.pack(side=tk.TOP, pady=10)
 
-        self.roll_label = tk.Label(self.manage_frame, text="Student ID", font=("bold", 12))
+        self.roll_label = tk.Label(self.manage_frame, text="Student ID", font=("bold", 14))
         self.roll_label.pack()
         self.roll_entry = tk.Entry(self.manage_frame, textvariable=self.Roll_No_var)
         self.roll_entry.pack()
 
-        self.name_label = tk.Label(self.manage_frame, text="Name", font=("bold", 12))
+        self.name_label = tk.Label(self.manage_frame, text="Name", font=("bold", 14))
         self.name_label.pack()
         self.name_entry = tk.Entry(self.manage_frame, textvariable=self.name_var)
         self.name_entry.pack()
 
-        self.grade_section_label = tk.Label(self.manage_frame, text="Grade and Section", font=("bold", 12))
+        self.grade_section_label = tk.Label(self.manage_frame, text="Grade and Section", font=("bold", 14))
         self.grade_section_label.pack()
         self.grade_section_entry = tk.Entry(self.manage_frame, textvariable=self.grade_section_var)
         self.grade_section_entry.pack()
 
-        self.email_label = tk.Label(self.manage_frame, text="Email", font=("bold", 12))
+        self.email_label = tk.Label(self.manage_frame, text="Email", font=("bold", 14))
         self.email_label.pack()
         self.email_entry = tk.Entry(self.manage_frame, textvariable=self.email_var)
         self.email_entry.pack()
 
-        self.gender_label = tk.Label(self.manage_frame, text="Gender", font=("bold", 12))
+        self.gender_label = tk.Label(self.manage_frame, text="Gender", font=("bold", 14))
         self.gender_label.pack()
         self.gender_combo = ttk.Combobox(self.manage_frame, textvariable=self.gender_var, state='readonly')
         self.gender_combo['values'] = ('Male', 'Female', 'Other')
         self.gender_combo.pack()
 
-        self.contact_label = tk.Label(self.manage_frame, text="Contact", font=("bold", 12))
+        self.contact_label = tk.Label(self.manage_frame, text="Contact", font=("bold", 14))
         self.contact_label.pack()
         self.contact_entry = tk.Entry(self.manage_frame, textvariable=self.contact_var)
         self.contact_entry.pack()
 
-        self.dob_label = tk.Label(self.manage_frame, text="D.O.B", font=("bold", 12))
+        self.dob_label = tk.Label(self.manage_frame, text="D.O.B", font=("bold", 14))
         self.dob_label.pack()
-        self.dob_entry = tk.Entry(self.manage_frame, textvariable=self.dob_var)
+        self.dob_entry = tk.Entry(self.manage_frame, textvariable=self.dob_var, width=25)
         self.dob_entry.pack()
 
         self.button_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.button_frame.place(x=20, y=500, width=450)
+        self.button_frame.place(x=40, y=525, width=400 , height=50)
 
         self.add_btn = tk.Button(self.button_frame, text="Add", command=self.add_student)
         self.add_btn.grid(row=0, column=0, padx=10, pady=10)
@@ -84,29 +84,29 @@ class StudentManagementSystem:
         self.clear_btn.grid(row=0, column=3, padx=10, pady=10)
 
         self.search_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.search_frame.place(x=500, y=100, width=700, height=380)
+        self.search_frame.place(x=500, y=100, width=700, height=80)
 
         self.search_label = tk.Label(self.search_frame, text="Search By", font=("bold", 12))
         self.search_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
         self.search_combo = ttk.Combobox(self.search_frame, textvariable=self.search_by, state='readonly')
         self.search_combo['values'] = ('Roll No', 'Name', 'Grade and Section')
-        self.search_combo.grid(row=0, column=1, padx=10, pady=10)
+        self.search_combo.grid(row=0, column=1, padx=5, pady=10)
         self.search_combo.current(0)
 
         self.search_entry = tk.Entry(self.search_frame, textvariable=self.search_txt)
-        self.search_entry.grid(row=0, column=2, padx=10, pady=10)
+        self.search_entry.grid(row=0, column=2, padx=5, pady=10)
 
         self.search_btn = tk.Button(self.search_frame, text="Search", command=self.search_students)
-        self.search_btn.grid(row=0, column=3, padx=10, pady=10)
+        self.search_btn.grid(row=0, column=3, padx=5, pady=5)
 
         self.showall_btn = tk.Button(self.search_frame, text="Show All", command=self.show_all)
-        self.showall_btn.grid(row=0, column=4, padx=10, pady=10)
+        self.showall_btn.grid(row=0, column=4, padx=5, pady=5)
 
         self.result_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.result_frame.place(x=500, y=500, width=700, height=150)
+        self.result_frame.place(x=500, y=200, width=700, height=400)
 
-        self.result_label = tk.Label(self.result_frame, text="Search Results", font=("bold", 12))
+        self.result_label = tk.Label(self.result_frame, text="Search Results", font=("bold", 20))
         self.result_label.pack(side=tk.TOP, pady=10)
 
         self.scrollbar = tk.Scrollbar(self.result_frame)
@@ -340,8 +340,8 @@ class StudentManagementSystem:
         try:
             connection = mysql.connector.connect(
                 host="localhost",
-                user="your_username",
-                password="your_password"
+                user="root",
+                password="Rahul@5111"
             )
 
             cursor = connection.cursor()
@@ -359,7 +359,9 @@ class StudentManagementSystem:
         except Error as e:
             print(f"Error while connecting to MySQL: {e}")
 
+def open_student_system():
+    root = tk.Tk()
+    student_management_system = StudentManagementSystem(root)
+    root.mainloop()
 
-root = tk.Tk()
-student_management_system = StudentManagementSystem(root)
-root.mainloop()
+open_student_system()

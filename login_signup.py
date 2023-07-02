@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
 from mysql.connector import Error
+import student_system as s_system
 
 
 class LoginSignupSystem:
@@ -36,7 +37,7 @@ class LoginSignupSystem:
             connection = mysql.connector.connect(
                 host="localhost",
                 user="root",
-                password="your_password"
+                password="Rahul@5111"
             )
             print("Connected to MySQL")
 
@@ -74,7 +75,8 @@ class LoginSignupSystem:
                     messagebox.showinfo("Success", "Login successful")
                     self.root.destroy()
                     # Call the function to open the student management system
-                    open_student_system()
+                    print("Initialising Database Portal")
+                    s_system.open_student_system()
                 else:
                     messagebox.showerror("Error", "Invalid username or password")
 
@@ -134,10 +136,6 @@ class LoginSignupSystem:
                 messagebox.showerror("Error", "Failed to signup")
 
 
-def open_student_system():
-    # Add your code here to open the student management system GUI
-    # You can replace this print statement with your code to open the student management system
-    print("Opening student management system...")
 
 
 def open_login_signup_system():
