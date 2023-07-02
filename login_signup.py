@@ -42,8 +42,8 @@ class LoginSignupSystem:
             print("Connected to MySQL")
 
             cursor = connection.cursor()
-            cursor.execute("CREATE DATABASE IF NOT EXISTS student_database")
-            cursor.execute("USE student_database")
+            cursor.execute("CREATE DATABASE IF NOT EXISTS student_management_system")
+            cursor.execute("USE student_management_system")
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -142,6 +142,5 @@ def open_login_signup_system():
     root = tk.Tk()
     obj = LoginSignupSystem(root)
     root.mainloop()
-
 
 

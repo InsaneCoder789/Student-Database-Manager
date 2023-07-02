@@ -10,7 +10,9 @@ class StudentManagementSystem:
         self.root = root
         self.root.title("Student Management System")
         self.root.geometry("1250x625")
-        self.root.resizable(False, False)
+        self.root.resizable(False,False)
+        self.root.configure(bg="#e6e6e6")
+
 
         self.Roll_No_var = tk.StringVar()
         self.name_var = tk.StringVar()
@@ -26,10 +28,10 @@ class StudentManagementSystem:
         self.title = tk.Label(root, text="Student Management System", font=("bold", 20))
         self.title.pack(pady=20)
 
-        self.manage_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.manage_frame.place(x=20, y=100, width=450, height=500)
+        self.manage_frame = tk.Frame(root, bd=4, relief=tk.RIDGE, bg="#f2f2f2")
+        self.manage_frame.pack(side=tk.LEFT, padx=20)
 
-        self.manage_title = tk.Label(self.manage_frame, text="Manage Students", font=("bold", 20))
+        self.manage_title = tk.Label(self.manage_frame, text="Manage Students", font=("bold", 20), bg="#f2f2f2")
         self.manage_title.pack(side=tk.TOP, pady=10)
 
         self.roll_label = tk.Label(self.manage_frame, text="Student ID", font=("bold", 14))
@@ -68,300 +70,191 @@ class StudentManagementSystem:
         self.dob_entry = tk.Entry(self.manage_frame, textvariable=self.dob_var, width=25)
         self.dob_entry.pack()
 
-        self.button_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.button_frame.place(x=40, y=525, width=400 , height=50)
+        self.button_frame = tk.Frame(self.manage_frame, bd=4, relief=tk.RIDGE)
+        self.button_frame.pack(pady=20)
 
-        self.add_btn = tk.Button(self.button_frame, text="Add", command=self.add_student)
-        self.add_btn.grid(row=0, column=0, padx=10, pady=10)
+        self.add_button = tk.Button(self.button_frame, text="Add", font=("bold", 12), command=self.add_student)
+        self.add_button.grid(row=0, column=0, padx=5, pady=10)
+        self.update_button = tk.Button(self.button_frame, text="Update", font=("bold", 12), command=self.update_student)
+        self.update_button.grid(row=0, column=1, padx=5, pady=10)
+        self.delete_button = tk.Button(self.button_frame, text="Delete", font=("bold", 12), command=self.delete_student)
+        self.delete_button.grid(row=0, column=2, padx=5, pady=10)
+        self.clear_button = tk.Button(self.button_frame, text="Clear", font=("bold", 12), command=self.clear_entries)
+        self.clear_button.grid(row=0, column=3, padx=5, pady=10)
 
-        self.update_btn = tk.Button(self.button_frame, text="Update", command=self.update_student)
-        self.update_btn.grid(row=0, column=1, padx=10, pady=10)
+        self.details_frame = tk.Frame(root, bd=4, relief=tk.RIDGE, bg="#f2f2f2")
+        self.details_frame.pack(side=tk.TOP, padx=20,pady=100)
 
-        self.delete_btn = tk.Button(self.button_frame, text="Delete", command=self.delete_student)
-        self.delete_btn.grid(row=0, column=2, padx=10, pady=10)
+        self.search_frame = tk.Frame(self.details_frame, bd=4, relief=tk.RIDGE, bg="#f2f2f2")
+        self.search_frame.pack(side=tk.TOP, pady=20)
 
-        self.clear_btn = tk.Button(self.button_frame, text="Clear", command=self.clear_fields)
-        self.clear_btn.grid(row=0, column=3, padx=10, pady=10)
-
-        self.search_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.search_frame.place(x=500, y=100, width=700, height=80)
-
-        self.search_label = tk.Label(self.search_frame, text="Search By", font=("bold", 12))
-        self.search_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-
+        self.search_label = tk.Label(self.search_frame, text="Search By", font=("bold", 14))
+        self.search_label.grid(row=0, column=0, padx=5)
         self.search_combo = ttk.Combobox(self.search_frame, textvariable=self.search_by, state='readonly')
-        self.search_combo['values'] = ('Roll No', 'Name', 'Grade and Section')
-        self.search_combo.grid(row=0, column=1, padx=5, pady=10)
-        self.search_combo.current(0)
-
+        self.search_combo['values'] = ('Roll_No', 'Name', 'Grade_Section')
+        self.search_combo.grid(row=0, column=1, padx=5)
         self.search_entry = tk.Entry(self.search_frame, textvariable=self.search_txt)
-        self.search_entry.grid(row=0, column=2, padx=5, pady=10)
+        self.search_entry.grid(row=0, column=2, padx=5)
+        self.search_button = tk.Button(self.search_frame, text="Search", font=("bold", 12), command=self.search_students)
+        self.search_button.grid(row=0, column=3, padx=5)
 
-        self.search_btn = tk.Button(self.search_frame, text="Search", command=self.search_students)
-        self.search_btn.grid(row=0, column=3, padx=5, pady=5)
+        self.students_tree = ttk.Treeview(self.details_frame, columns=(
+            'Roll_No', 'Name', 'Grade_Section', 'Email', 'Gender', 'Contact', 'D.O.B'))
+        
+        self.students_tree.heading('Roll_No', text='Student ID', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('Name', text='Name', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('Grade_Section', text='Grade and Section', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('Email', text='Email', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('Gender', text='Gender', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('Contact', text='Contact', anchor=tk.CENTER, foreground="black")
+        self.students_tree.heading('D.O.B', text='D.O.B', anchor=tk.CENTER, foreground="black")
 
-        self.showall_btn = tk.Button(self.search_frame, text="Show All", command=self.show_all)
-        self.showall_btn.grid(row=0, column=4, padx=5, pady=5)
+        self.students_tree['show'] = 'headings'
+        self.students_tree.column('Roll_No', width=100, foreground="black")
+        self.students_tree.column('Name', width=150, foreground="black")
+        self.students_tree.column('Grade_Section', width=120, foreground="black")
+        self.students_tree.column('Email', width=200, foreground="black")
+        self.students_tree.column('Gender', width=100, foreground="black")
+        self.students_tree.column('Contact', width=120, foreground="black")
+        self.students_tree.column('D.O.B', width=100, foreground="black")
 
-        self.result_frame = tk.Frame(root, bd=4, relief=tk.RIDGE)
-        self.result_frame.place(x=500, y=200, width=700, height=400)
+        self.students_tree.pack(fill=tk.BOTH, expand=1)
+        self.students_tree.bind('<ButtonRelease-1>', self.get_selected_row)
 
-        self.result_label = tk.Label(self.result_frame, text="Search Results", font=("bold", 20))
-        self.result_label.pack(side=tk.TOP, pady=10)
-
-        self.scrollbar = tk.Scrollbar(self.result_frame)
-        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-        self.students_table = ttk.Treeview(
-            self.result_frame,
-            column=("Roll No", "Name", "Grade and Section", "Email", "Gender", "Contact", "D.O.B"),
-            yscrollcommand=self.scrollbar.set,
-        )
-
-        self.students_table.heading("Roll No", text="Roll No")
-        self.students_table.heading("Name", text="Name")
-        self.students_table.heading("Grade and Section", text="Grade and Section")
-        self.students_table.heading("Email", text="Email")
-        self.students_table.heading("Gender", text="Gender")
-        self.students_table.heading("Contact", text="Contact")
-        self.students_table.heading("D.O.B", text="D.O.B")
-
-        self.students_table['show'] = 'headings'
-        self.students_table.column("Roll No", width=100)
-        self.students_table.column("Name", width=200)
-        self.students_table.column("Grade and Section", width=150)
-        self.students_table.column("Email", width=200)
-        self.students_table.column("Gender", width=100)
-        self.students_table.column("Contact", width=150)
-        self.students_table.column("D.O.B", width=100)
-
-        self.students_table.pack(fill=tk.BOTH, expand=1)
-        self.scrollbar.config(command=self.students_table.yview)
-
-        self.students_table.bind("<ButtonRelease-1>", self.get_selected_row)
-
-        self.initialize_database()
+        self.display_students()
 
     def add_student(self):
-        roll_no = self.Roll_No_var.get()
-        name = self.name_var.get()
-        grade_section = self.grade_section_var.get()
-        email = self.email_var.get()
-        gender = self.gender_var.get()
-        contact = self.contact_var.get()
-        dob = self.dob_var.get()
-
-        if roll_no == "" or name == "" or grade_section == "" or email == "" or gender == "" or contact == "" or dob == "":
-            messagebox.showerror("Error", "All fields are required!")
+        if self.Roll_No_var.get() == '' or self.name_var.get() == '' or self.grade_section_var.get() == '':
+            messagebox.showerror("Error", "Please fill in all required fields")
         else:
             try:
-                connection = mysql.connector.connect(
-                    host="localhost",
-                    user="your_username",
-                    password="your_password",
-                    database="student_management_system"
-                )
-
+                connection = self.connect_to_database()
                 cursor = connection.cursor()
-
-                insert_query = "INSERT INTO students (roll_no, name, grade_section, email, gender, contact, dob) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-                student_data = (roll_no, name, grade_section, email, gender, contact, dob)
-
-                cursor.execute(insert_query, student_data)
-
+                query = "INSERT INTO students (Roll_No, Name, Grade_Section, Email, Gender, Contact, DOB) " \
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                values = (self.Roll_No_var.get(), self.name_var.get(), self.grade_section_var.get(),
+                          self.email_var.get(), self.gender_var.get(), self.contact_var.get(), self.dob_var.get())
+                cursor.execute(query, values)
                 connection.commit()
-
-                self.show_all()
-                self.clear_fields()
                 connection.close()
-                messagebox.showinfo("Success", "Student added successfully!")
-
+                self.clear_entries()
+                self.display_students()
+                messagebox.showinfo("Success", "Student added successfully")
             except Error as e:
-                print(f"Error while connecting to MySQL: {e}")
+                messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
     def update_student(self):
-        roll_no = self.Roll_No_var.get()
-        name = self.name_var.get()
-        grade_section = self.grade_section_var.get()
-        email = self.email_var.get()
-        gender = self.gender_var.get()
-        contact = self.contact_var.get()
-        dob = self.dob_var.get()
-
-        if roll_no == "" or name == "" or grade_section == "" or email == "" or gender == "" or contact == "" or dob == "":
-            messagebox.showerror("Error", "All fields are required!")
+        if self.Roll_No_var.get() == '' or self.name_var.get() == '' or self.grade_section_var.get() == '':
+            messagebox.showerror("Error", "Please select a student")
         else:
             try:
-                connection = mysql.connector.connect(
-                    host="localhost",
-                    user="your_username",
-                    password="your_password",
-                    database="student_management_system"
-                )
-
+                connection = self.connect_to_database()
                 cursor = connection.cursor()
-
-                update_query = "UPDATE students SET name=%s, grade_section=%s, email=%s, gender=%s, contact=%s, dob=%s WHERE roll_no=%s"
-                student_data = (name, grade_section, email, gender, contact, dob, roll_no)
-
-                cursor.execute(update_query, student_data)
-
+                query = "UPDATE students SET Name=%s, Grade_Section=%s, Email=%s, Gender=%s, Contact=%s, DOB=%s " \
+                        "WHERE Roll_No=%s"
+                values = (self.name_var.get(), self.grade_section_var.get(), self.email_var.get(),
+                          self.gender_var.get(), self.contact_var.get(), self.dob_var.get(), self.Roll_No_var.get())
+                cursor.execute(query, values)
                 connection.commit()
-
-                self.show_all()
-                self.clear_fields()
                 connection.close()
-                messagebox.showinfo("Success", "Student updated successfully!")
-
+                self.clear_entries()
+                self.display_students()
+                messagebox.showinfo("Success", "Student updated successfully")
             except Error as e:
-                print(f"Error while connecting to MySQL: {e}")
+                messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
     def delete_student(self):
-        roll_no = self.Roll_No_var.get()
-
-        if roll_no == "":
-            messagebox.showerror("Error", "Please select a student!")
+        if self.Roll_No_var.get() == '':
+            messagebox.showerror("Error", "Please select a student")
         else:
-            try:
-                connection = mysql.connector.connect(
-                    host="localhost",
-                    user="your_username",
-                    password="your_password",
-                    database="student_management_system"
-                )
-
-                cursor = connection.cursor()
-
-                delete_query = "DELETE FROM students WHERE roll_no=%s"
-                student_data = (roll_no,)
-
-                cursor.execute(delete_query, student_data)
-
-                connection.commit()
-
-                self.show_all()
-                self.clear_fields()
-                connection.close()
-                messagebox.showinfo("Success", "Student deleted successfully!")
-
-            except Error as e:
-                print(f"Error while connecting to MySQL: {e}")
-
-    def clear_fields(self):
-        self.Roll_No_var.set("")
-        self.name_var.set("")
-        self.grade_section_var.set("")
-        self.email_var.set("")
-        self.gender_var.set("")
-        self.contact_var.set("")
-        self.dob_var.set("")
+            confirmation = messagebox.askyesno("Confirmation", "Are you sure you want to delete this student?")
+            if confirmation == 1:
+                try:
+                    connection = self.connect_to_database()
+                    cursor = connection.cursor()
+                    query = "DELETE FROM students WHERE Roll_No=%s"
+                    value = (self.Roll_No_var.get(),)
+                    cursor.execute(query, value)
+                    connection.commit()
+                    connection.close()
+                    self.clear_entries()
+                    self.display_students()
+                    messagebox.showinfo("Success", "Student deleted successfully")
+                except Error as e:
+                    messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
     def search_students(self):
-        search_by = self.search_by.get()
-        search_text = self.search_txt.get()
-
         try:
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="your_username",
-                password="your_password",
-                database="student_management_system"
-            )
-
+            connection = self.connect_to_database()
             cursor = connection.cursor()
-
-            if search_by == "Roll No":
-                search_query = "SELECT * FROM students WHERE roll_no=%s"
-            elif search_by == "Name":
-                search_query = "SELECT * FROM students WHERE name=%s"
-            elif search_by == "Grade and Section":
-                search_query = "SELECT * FROM students WHERE grade_section=%s"
-
-            search_data = (search_text,)
-
-            cursor.execute(search_query, search_data)
-
+            query = ""
+            value = ""
+            if self.search_by.get() == 'Roll_No':
+                query = "SELECT * FROM students WHERE Roll_No=%s"
+                value = (self.search_txt.get(),)
+            elif self.search_by.get() == 'Name':
+                query = "SELECT * FROM students WHERE Name=%s"
+                value = (self.search_txt.get(),)
+            elif self.search_by.get() == 'Grade_Section':
+                query = "SELECT * FROM students WHERE Grade_Section=%s"
+                value = (self.search_txt.get(),)
+            cursor.execute(query, value)
             rows = cursor.fetchall()
-
-            if len(rows) != 0:
-                self.students_table.delete(*self.students_table.get_children())
-                for row in rows:
-                    self.students_table.insert("", tk.END, values=row)
-
-                connection.close()
-            else:
-                connection.close()
-                messagebox.showinfo("No Results", "No matching records found!")
-
+            self.students_tree.delete(*self.students_tree.get_children())
+            for row in rows:
+                self.students_tree.insert('', tk.END, values=row)
+            connection.close()
         except Error as e:
-            print(f"Error while connecting to MySQL: {e}")
+            messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
-    def show_all(self):
+    def display_students(self):
         try:
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="your_username",
-                password="your_password",
-                database="student_management_system"
-            )
-
+            connection = self.connect_to_database()
             cursor = connection.cursor()
-
-            select_query = "SELECT * FROM students"
-
-            cursor.execute(select_query)
-
+            query = "SELECT * FROM students"
+            cursor.execute(query)
             rows = cursor.fetchall()
-
-            if len(rows) != 0:
-                self.students_table.delete(*self.students_table.get_children())
-                for row in rows:
-                    self.students_table.insert("", tk.END, values=row)
-
-                connection.close()
-
+            self.students_tree.delete(*self.students_tree.get_children())
+            for row in rows:
+                self.students_tree.insert('', tk.END, values=row)
+            connection.close()
         except Error as e:
-            print(f"Error while connecting to MySQL: {e}")
+            messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
     def get_selected_row(self, event):
-        selected_row = self.students_table.focus()
-        data = self.students_table.item(selected_row)
-        row = data['values']
-
-        self.Roll_No_var.set(row[0])
-        self.name_var.set(row[1])
-        self.grade_section_var.set(row[2])
-        self.email_var.set(row[3])
-        self.gender_var.set(row[4])
-        self.contact_var.set(row[5])
-        self.dob_var.set(row[6])
-
-    def initialize_database(self):
         try:
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="Rahul@5111"
-            )
+            selected_row = self.students_tree.focus()
+            values = self.students_tree.item(selected_row, 'values')
+            self.Roll_No_var.set(values[0])
+            self.name_var.set(values[1])
+            self.grade_section_var.set(values[2])
+            self.email_var.set(values[3])
+            self.gender_var.set(values[4])
+            self.contact_var.set(values[5])
+            self.dob_var.set(values[6])
+        except IndexError:
+            pass
 
-            cursor = connection.cursor()
+    def clear_entries(self):
+        self.Roll_No_var.set('')
+        self.name_var.set('')
+        self.grade_section_var.set('')
+        self.email_var.set('')
+        self.gender_var.set('')
+        self.contact_var.set('')
+        self.dob_var.set('')
 
-            create_db_query = "CREATE DATABASE IF NOT EXISTS student_management_system"
-            use_db_query = "USE student_management_system"
-            create_table_query = "CREATE TABLE IF NOT EXISTS students (roll_no INT PRIMARY KEY, name VARCHAR(255), grade_section VARCHAR(255), email VARCHAR(255), gender VARCHAR(255), contact VARCHAR(255), dob VARCHAR(255))"
+    @staticmethod
+    def connect_to_database():
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Rahul@5111",
+            database="student_management_system"
+        )
+        return connection
 
-            cursor.execute(create_db_query)
-            cursor.execute(use_db_query)
-            cursor.execute(create_table_query)
-
-            connection.close()
-
-        except Error as e:
-            print(f"Error while connecting to MySQL: {e}")
-
-def open_student_system():
+def open_student_system(): 
     root = tk.Tk()
-    student_management_system = StudentManagementSystem(root)
+    sms = StudentManagementSystem(root)
     root.mainloop()
-
-open_student_system()
