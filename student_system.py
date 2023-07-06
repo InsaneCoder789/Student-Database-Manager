@@ -169,58 +169,100 @@ class StudentManagementSystem:
     def move_right(self):
         self.students_tree.xview_scroll(30, "units")
 
-
     def export_data(self):
-        # Get the file path from the user
-        file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV Files", "*.csv")])
-        if file_path:
-            try:
-                # Open the file in write mode
-                with open(file_path, mode='w', newline='') as file:
-                    writer = csv.writer(file)
-                    # Write the header row
-                    writer.writerow(['Roll_No', 'Name', 'Grade_Section', 'Email', 'Gender', 'Contact', 'D.O.B'])
-                    # Write each student's data
-                    for student in self.students:
-                        writer.writerow([
-                            student['Roll_No'],
-                            student['Name'],
-                            student['Grade_Section'],
-                            student['Email'],
-                            student['Gender'],
-                            student['Contact'],
-                            student['D.O.B']
-                        ])
-                messagebox.showinfo("Success", "Data exported successfully!")
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to export data: {e}")
+        # Connect to the MySQL database
+        conn = self.connect_to_database()
+        cursor = conn.cursor()
 
+        try:
+            # Retrieve the selected items from the TreeView
+            selected_items = self.tree_view.selection()
+            
+            if len(selected_items) == 0:
+                messagebox.showwarning("No Records Selected", "Please select records to export.")
+                return
+
+            # Export data to a CSV file
+            file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV Files", "*.csv")])
+            if not file_path:
+                return
+
+            # Retrieve data from the selected items
+            rows = []
+            for item in selected_items:
+                row = self.tree_view.item(item)['values']
+                rows.append(row)
+
+            # Write data to the CSV file
+            with open(file_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["Roll_No", "Name", "Grade_Section", "Email", "Gender", "Contact", "D.O.B"])
+                writer.writerows(rows)
+
+            messagebox.showinfo("Export Successful", "Data exported to CSV file successfully.")
+            
+
+        except Exception as e:
+            messagebox.showerror("Export Error", f"An error occurred while exporting data: {str(e)}")
+
+        finally:
+            # Close the database connection
+            cursor.close()
+            conn.close()
+
+        
     def import_data(self):
-        # Get the file path from the user
+        # Open a file dialog to choose the import file
         file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
-        if file_path:
-            try:
-                # Open the file in read mode
-                with open(file_path, mode='r') as file:
-                    reader = csv.reader(file)
-                    # Skip the header row
-                    next(reader)
-                    # Read each row and add the student data
-                    for row in reader:
-                        student = {
-                            'Roll_No': row[0],
-                            'Name': row[1],
-                            'Grade_Section': row[2],
-                            'Email': row[3],
-                            'Gender': row[4],
-                            'Contact': row[5],
-                            'D.O.B': row[6]
-                        }
-                        self.students.append(student)
-                self.display_students()
-                messagebox.showinfo("Success", "Data imported successfully!")
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to import data: {e}")
+        if not file_path:
+            return
+
+        try:
+            # Clear existing student data
+            self.students_tree.delete(*self.students_tree.get_children())
+            self.students.clear()
+
+            # Read the CSV file
+            with open(file_path, mode='r') as file:
+                reader = csv.reader(file)
+                headings = next(reader)  # Get the column headings
+
+                # Check if the file has the expected columns
+                if headings != ['Roll_No', 'Name', 'Grade_Section', 'Email', 'Gender', 'Contact', 'D.O.B']:
+                    messagebox.showerror("Invalid File", "The selected file does not have the expected columns.")
+                    return
+
+                # Connect to the MySQL database
+                conn = self.connect_to_database()
+                cursor = conn.cursor()
+
+                # Process each row of data
+                for row in reader:
+                    student_data = dict(zip(headings, row))
+                    self.students.append(student_data)
+                    self.students_tree.insert('', tk.END, values=list(student_data.values()))
+
+                    # Insert the data into the MySQL database
+                    query = "INSERT INTO students (Roll_No, Name, Grade_Section, Email, Gender, Contact, DOB) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                    values = (
+                        student_data['Roll_No'],
+                        student_data['Name'],
+                        student_data['Grade_Section'],
+                        student_data['Email'],
+                        student_data['Gender'],
+                        student_data['Contact'],
+                        student_data['D.O.B']
+                    )
+                    cursor.execute(query, values)
+
+                # Commit the changes and close the database connection
+                conn.commit()
+                conn.close()
+
+            messagebox.showinfo("Import Successful", "Data imported from CSV file successfully.")
+
+        except Exception as e:
+            messagebox.showerror("Import Error", f"An error occurred while importing data: {str(e)}")
 
     def add_student(self):
         if self.Roll_No_var.get() == '' or self.name_var.get() == '' or self.grade_section_var.get() == '':
