@@ -13,7 +13,7 @@ class StudentManagementSystem:
         self.root.geometry("1250x625")
         self.root.resizable(False, False)
         self.root.tk.call("source", "azure.tcl")
-        self.root.tk.call("set_theme", "dark")
+        self.root.tk.call("set_theme", "light")
         
         #Style configuration
         style = ttk.Style()
@@ -54,38 +54,38 @@ class StudentManagementSystem:
         self.manage_title = ttk.Label(self.manage_frame, text="Manage Students", font=("bold", 16), style="Title.TLabel")
         self.manage_title.pack(side=tk.TOP, pady=10)
 
-        self.roll_label = ttk.Label(self.manage_frame, text="Student ID", font=("bold", 9), style="Label.TLabel")
+        self.roll_label = ttk.Label(self.manage_frame, text="Student ID", font=("bold", 11), style="Label.TLabel")
         self.roll_label.pack()
         self.roll_entry = ttk.Entry(self.manage_frame, textvariable=self.Student_Id_var, font=("bold", 9), style="Entry.TEntry")
         self.roll_entry.pack()
 
-        self.name_label = ttk.Label(self.manage_frame, text="Name", font=("bold", 9), style="Label.TLabel")
+        self.name_label = ttk.Label(self.manage_frame, text="Name", font=("bold", 11), style="Label.TLabel")
         self.name_label.pack()
         self.name_entry = ttk.Entry(self.manage_frame, textvariable=self.name_var, font=("bold", 9), style="Entry.TEntry")
         self.name_entry.pack()
 
-        self.grade_section_label = ttk.Label(self.manage_frame, text="Grade and Section", font=("bold", 9), style="Label.TLabel")
+        self.grade_section_label = ttk.Label(self.manage_frame, text="Grade and Section", font=("bold", 11), style="Label.TLabel")
         self.grade_section_label.pack()
         self.grade_section_entry = ttk.Entry(self.manage_frame, textvariable=self.grade_section_var, font=("bold", 9), style="Entry.TEntry")
         self.grade_section_entry.pack()
 
-        self.email_label = ttk.Label(self.manage_frame, text="Email", font=("bold", 9), style="Label.TLabel")
+        self.email_label = ttk.Label(self.manage_frame, text="Email", font=("bold", 11), style="Label.TLabel")
         self.email_label.pack()
         self.email_entry = ttk.Entry(self.manage_frame, textvariable=self.email_var, font=("bold", 9), style="Entry.TEntry")
         self.email_entry.pack()
 
-        self.gender_label = ttk.Label(self.manage_frame, text="Gender", font=("bold", 9), style="Label.TLabel")
+        self.gender_label = ttk.Label(self.manage_frame, text="Gender", font=("bold", 11), style="Label.TLabel")
         self.gender_label.pack()
         self.gender_combo = ttk.Combobox(self.manage_frame, textvariable=self.gender_var, state='readonly', font=("bold", 9), style="Combobox.TCombobox")
         self.gender_combo['values'] = ('Male', 'Female', 'Other')
         self.gender_combo.pack()
 
-        self.contact_label = ttk.Label(self.manage_frame, text="Contact", font=("bold", 9), style="Label.TLabel")
+        self.contact_label = ttk.Label(self.manage_frame, text="Contact", font=("bold", 11), style="Label.TLabel")
         self.contact_label.pack()
         self.contact_entry = ttk.Entry(self.manage_frame, textvariable=self.contact_var, font=("bold", 9), style="Entry.TEntry")
         self.contact_entry.pack()
 
-        self.dob_label = ttk.Label(self.manage_frame, text="DOB", font=("bold", 9), style="Label.TLabel")
+        self.dob_label = ttk.Label(self.manage_frame, text="DOB", font=("bold", 11), style="Label.TLabel")
         self.dob_label.pack()
         self.dob_entry = ttk.Entry(self.manage_frame, textvariable=self.dob_var, width=25, font=("bold",9 ), style="Entry.TEntry")
         self.dob_entry.pack()
