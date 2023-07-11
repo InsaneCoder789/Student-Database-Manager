@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter.constants import LEFT
+from PIL import ImageTk
 import mysql.connector
 from mysql.connector import Error
 import student_system as s_system
@@ -9,26 +11,42 @@ class LoginSignupSystem:
     def __init__(self, root):
         self.root = root
         self.root.title("Login/Signup System")
-        self.root.geometry("300x200")
+        self.root.geometry("1250x625")
 
         self.username_var = tk.StringVar()
         self.password_var = tk.StringVar()
+        
+        self.backgroundimage=ImageTk.PhotoImage(file='bg_images/bg.png')
+        self.backgroundimage_label=tk.Label(root,image=self.backgroundimage)
+        self.backgroundimage_label.place(x=0,y=0)
 
-        self.username_label = tk.Label(root, text="Username:")
-        self.username_label.pack()
-        self.username_entry = tk.Entry(root, textvariable=self.username_var)
-        self.username_entry.pack()
+        self.loginFrame=tk.Frame(root,bg='white')
+        self.loginFrame.place(x=400,y=150)
 
-        self.password_label = tk.Label(root, text="Password:")
-        self.password_label.pack()
-        self.password_entry = tk.Entry(root, textvariable=self.password_var, show="*")
-        self.password_entry.pack()
+        self.logoImage=tk.PhotoImage(file='bg_images/logo.png')
 
-        self.login_btn = tk.Button(root, text="Login", command=self.login)
-        self.login_btn.pack()
+        self.logoLabel=tk.Label(self.loginFrame,image=self.logoImage)
+        self.logoLabel.grid(row=0,column=0,columnspan=2,pady=10)
+        self.usernameImage=tk.PhotoImage(file='bg_images/user.png')
+        self.usernameLabel=tk.Label(self.loginFrame,image=self.usernameImage,text='Username',compound=LEFT
+                            ,font=('times new roman',20,'bold'),bg='white')
+        self.usernameLabel.grid(row=1,column=0,pady=10,padx=20)
 
-        self.signup_btn = tk.Button(root, text="Signup", command=self.signup)
-        self.signup_btn.pack()
+        self.usernameEntry=tk.Entry(self.loginFrame,font=('times new roman',20,'bold'),bd=5,fg='royalblue')
+        self.usernameEntry.grid(row=1,column=1,pady=10,padx=20)
+
+        self.passwordImage=tk.PhotoImage(file='bg_images/password.png')
+        self.passwordLabel=tk.Label(self.loginFrame,image=self.passwordImage,text='Password',compound=LEFT
+                            ,font=('times new roman',20,'bold'),bg='white')
+        self.passwordLabel.grid(row=2,column=0,pady=10,padx=20)
+
+        self.passwordEntry=tk.Entry(self.loginFrame,font=('times new roman',20,'bold'),bd=5,fg='royalblue')
+        self.passwordEntry.grid(row=2,column=1,pady=10,padx=20)
+
+        self.loginButton=tk.Button(self.loginFrame,text='Login',font=('times new roman',14,'bold'),width=15
+                        ,fg='white',bg='cornflowerblue',activebackground='cornflowerblue',
+                        activeforeground='white',cursor='hand2',command=self.login)
+        self.loginButton.grid(row=3,column=1,pady=10)
 
         self.connection = self.connect_to_database()
 
@@ -142,5 +160,6 @@ def open_login_signup_system():
     root = tk.Tk()
     obj = LoginSignupSystem(root)
     root.mainloop()
+open_login_signup_system()
 
 

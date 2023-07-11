@@ -10,12 +10,12 @@ proc set_theme {mode} {
 		ttk::style theme use "azure-dark"
 
 		array set colors {
-            -fg             "#ffffff"
-            -bg             "#333333"
-            -disabledfg     "#ffffff"
-            -disabledbg     "#737373"
-            -selectfg       "#ffffff"
-            -selectbg       "#007fff"
+            -fg             "#A1662F"
+            -bg             "#A1662F"
+            -disabledfg     "#A1662F"
+            -disabledbg     "#A1662F"
+            -selectfg       "#A1662F"
+            -selectbg       "#A1662F"
         }
         
         ttk::style configure . \
