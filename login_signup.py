@@ -1,52 +1,50 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
-from tkinter.constants import LEFT
-from PIL import ImageTk
 import mysql.connector
 from mysql.connector import Error
 import student_system as s_system
-
+from student_system import open_student_system
+import time
 
 class LoginSignupSystem:
     def __init__(self, root):
         self.root = root
-        self.root.title("Login/Signup System")
-        self.root.geometry("1250x625")
+        self.root.title('Login')
+        self.root.geometry('925x500+300+200')
+        self.root.configure(bg="#fff")
+        self.root.resizable(False, False)
+        self.img = tk.PhotoImage(file='bg_images/login.png')
+        tk.Label(root, image=self.img, bg='white').place(x=50, y=50)
+        self.root.tk.call("source", "azure.tcl")
+        self.root.tk.call("set_theme", "light")
+        self.login_frame()
 
-        self.username_var = tk.StringVar()
-        self.password_var = tk.StringVar()
-        
-        self.backgroundimage=ImageTk.PhotoImage(file='bg_images/bg.png')
-        self.backgroundimage_label=tk.Label(root,image=self.backgroundimage)
-        self.backgroundimage_label.place(x=0,y=0)
+    def login_frame(self):
+        self.frame = tk.Frame(self.root, width=350, height=350, bg="white")
+        self.frame.place(x=480, y=70)
+        heading = tk.Label(self.frame, text='Sign in', fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 23, 'bold'))
+        heading.place(x=100, y=5)
 
-        self.loginFrame=tk.Frame(root,bg='white')
-        self.loginFrame.place(x=400,y=150)
+        self.user = tk.Entry(self.frame, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI Light', 11))
+        self.user.place(x=30, y=80)
+        self.user.insert(0, 'Username')
+        self.user.bind('<FocusIn>', self.on_enter)
+        self.user.bind('<FocusOut>', self.on_leave)
+        tk.Frame(self.frame, width=295, height=2, bg='black').place(x=25, y=107)
 
-        self.logoImage=tk.PhotoImage(file='bg_images/logo.png')
+        self.passw = tk.Entry(self.frame, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI Light', 11))
+        self.passw.place(x=30, y=150)
+        self.passw.insert(0, 'Password')
+        self.passw.bind('<FocusIn>', self.on_enter_1)
+        self.passw.bind('<FocusOut>', self.on_leave_1)
+        tk.Frame(self.frame, width=295, height=2, bg='black').place(x=25, y=177)
 
-        self.logoLabel=tk.Label(self.loginFrame,image=self.logoImage)
-        self.logoLabel.grid(row=0,column=0,columnspan=2,pady=10)
-        self.usernameImage=tk.PhotoImage(file='bg_images/user.png')
-        self.usernameLabel=tk.Label(self.loginFrame,image=self.usernameImage,text='Username',compound=LEFT
-                            ,font=('times new roman',20,'bold'),bg='white')
-        self.usernameLabel.grid(row=1,column=0,pady=10,padx=20)
-
-        self.usernameEntry=tk.Entry(self.loginFrame,font=('times new roman',20,'bold'),bd=5,fg='royalblue')
-        self.usernameEntry.grid(row=1,column=1,pady=10,padx=20)
-
-        self.passwordImage=tk.PhotoImage(file='bg_images/password.png')
-        self.passwordLabel=tk.Label(self.loginFrame,image=self.passwordImage,text='Password',compound=LEFT
-                            ,font=('times new roman',20,'bold'),bg='white')
-        self.passwordLabel.grid(row=2,column=0,pady=10,padx=20)
-
-        self.passwordEntry=tk.Entry(self.loginFrame,font=('times new roman',20,'bold'),bd=5,fg='royalblue')
-        self.passwordEntry.grid(row=2,column=1,pady=10,padx=20)
-
-        self.loginButton=tk.Button(self.loginFrame,text='Login',font=('times new roman',14,'bold'),width=15
-                        ,fg='white',bg='cornflowerblue',activebackground='cornflowerblue',
-                        activeforeground='white',cursor='hand2',command=self.login)
-        self.loginButton.grid(row=3,column=1,pady=10)
+        tk.Button(self.frame, width=30, pady=6, text='Sign in', bg='#57a1f8', fg='white', border=0, command=self.login).place(x=30, y=204)
+        label = tk.Label(self.frame, text="Don't have an account?", fg='black', bg='white', font=('Microsoft Yahei UI Light', 9))
+        label.place(x=75, y=270)
+        sign_up = tk.Button(self.frame, width=6, text='Sign up', border=0, bg='white', cursor='hand2', fg='#57a1f8', command=self.signup)
+        sign_up.place(x=190, y=270)
 
         self.connection = self.connect_to_database()
 
@@ -65,6 +63,7 @@ class LoginSignupSystem:
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
                     username VARCHAR(255) NOT NULL,
                     password VARCHAR(255) NOT NULL
                 )
@@ -77,89 +76,164 @@ class LoginSignupSystem:
             messagebox.showerror("Error", "Failed to connect to MySQL")
             return None
 
+    def on_enter(self, e):
+        self.user.delete(0, 'end')
+
+    def on_leave(self, e):
+        username = self.user.get()
+        if username == '':
+            self.user.insert(0, 'Username')
+
+    def on_enter_1(self, e):
+        self.passw.delete(0, 'end')
+
+    def on_leave_1(self, e):
+        password = self.passw.get()
+        if password == '':
+            self.passw.insert(0, 'Password')
+
+
     def login(self):
-        username = self.username_var.get()
-        password = self.password_var.get()
+        self.progress_window = tk.Toplevel(self.root)
+        self.progress_window.geometry('300x100')
+        self.progress_window.resizable(False, False)
+
+        self.progress_label = tk.Label(self.progress_window, text="Logging in...", font=('Arial', 12))
+        self.progress_label.pack(pady=20)
+
+        self.progress_style = ttk.Style()
+        self.progress_style.theme_use('default')
+        self.progress_style.configure("green.Horizontal.TProgressbar", troughcolor="lightgray", background="green")
+        self.progress_bar = ttk.Progressbar(self.progress_window, style="green.Horizontal.TProgressbar", mode='determinate', length=200)
+        self.progress_bar.pack(pady=10)
+
+        self.root.after(100, self.login_process)
+
+    def login_process(self):
+        username = self.user.get()
+        password = self.passw.get()
 
         if username == "" or password == "":
             messagebox.showerror("Error", "Username and password are required fields")
+            self.progress_window.destroy()
         else:
             try:
+                self.progress_bar.start(5)  # Start the progress bar animation
+
                 cursor = self.connection.cursor()
                 cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (username, password))
                 user = cursor.fetchone()
 
                 if user:
+                    # Simulate delay for demonstration purposes (replace this with your actual code)
+                    time.sleep(2)
+
+                    self.progress_bar.stop()  # Stop the progress bar animation
+                    self.progress_window.destroy()  # Destroy the progress window
+
                     messagebox.showinfo("Success", "Login successful")
                     self.root.destroy()
                     # Call the function to open the student management system
-                    print("Initialising Database Portal")
-                    s_system.open_student_system()
+                    print("Initializing Database Portal")
+                    s_system.open_student_system()  # Replace this line with your student system code
+
                 else:
                     messagebox.showerror("Error", "Invalid username or password")
+                    self.progress_window.destroy()
 
             except Error as e:
                 print("Error occurred while logging in:", e)
                 messagebox.showerror("Error", "Failed to login")
+                self.progress_window.destroy()
+
 
     def signup(self):
-        self.username_label.pack_forget()
-        self.username_entry.pack_forget()
-        self.password_label.pack_forget()
-        self.password_entry.pack_forget()
-        self.login_btn.pack_forget()
-        self.signup_btn.pack_forget()
+        self.frame.pack_forget()
+        self.frame1 = tk.Frame(self.root, width=350, height=350, bg="white")
+        self.frame1.place(x=480, y=70)
+        heading = tk.Label(self.frame1, text='Sign Up', fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 23, 'bold'))
+        heading.place(x=100, y=5)
 
-        self.signup_username_label = tk.Label(self.root, text="Username:")
-        self.signup_username_label.pack()
-        self.signup_username_entry = tk.Entry(self.root, textvariable=self.username_var)
-        self.signup_username_entry.pack()
+        self.name = tk.Entry(self.frame1, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI Light', 11))
+        self.name.place(x=30, y=80)
+        self.name.insert(0, 'Name')
+        self.name.bind('<FocusIn>', self.on_enter_2)
+        self.name.bind('<FocusOut>', self.on_leave_2)
+        tk.Frame(self.frame1, width=295, height=2, bg='black').place(x=25, y=107)
 
-        self.signup_password_label = tk.Label(self.root, text="Password:")
-        self.signup_password_label.pack()
-        self.signup_password_entry = tk.Entry(self.root, textvariable=self.password_var, show="*")
-        self.signup_password_entry.pack()
+        self.username = tk.Entry(self.frame1, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI Light', 11))
+        self.username.place(x=30, y=150)
+        self.username.insert(0, 'Username')
+        self.username.bind('<FocusIn>', self.on_enter_3)
+        self.username.bind('<FocusOut>', self.on_leave_3)
+        tk.Frame(self.frame1, width=295, height=2, bg='black').place(x=25, y=177)
 
-        self.signup_confirm_btn = tk.Button(self.root, text="Signup", command=self.confirm_signup)
-        self.signup_confirm_btn.pack()
+        self.password = tk.Entry(self.frame1, width=25, fg='black', border=0, bg="white", font=('Microsoft YaHei UI Light', 11))
+        self.password.place(x=30, y=220)
+        self.password.insert(0, 'Password')
+        self.password.bind('<FocusIn>', self.on_enter_4)
+        self.password.bind('<FocusOut>', self.on_leave_4)
+        tk.Frame(self.frame1, width=295, height=2, bg='black').place(x=25, y=247)
+
+        ttk.Button(self.frame1, width=30, text='Sign Up',style="Accent.TButton", command=self.confirm_signup).place(x=30, y=270)
+        label = tk.Label(self.frame1, text="Already have an Account?", fg='black', bg='white', font=('Microsoft Yahei UI Light', 9))
+        label.place(x=75, y=320)
+        sign_in = tk.Button(self.frame1, width=6, text='Sign In', border=0, bg='white', cursor='hand2', fg='#57a1f8', command=self.login_frame)
+        sign_in.place(x=190, y=320)
+
+    def on_enter_2(self, e):
+        self.name.delete(0, 'end')
+
+    def on_leave_2(self, e):
+        name_entry = self.name.get()
+        if name_entry == '':
+            self.name.insert(0, 'Name')
+
+    def on_enter_3(self, e):
+        self.username.delete(0, 'end')
+
+    def on_leave_3(self, e):
+        username = self.username.get()
+        if username == '':
+            self.username.insert(0, 'Username')
+
+    def on_enter_4(self, e):
+        self.password.delete(0, 'end')
+
+    def on_leave_4(self, e):
+        password = self.password.get()
+        if password == '':
+            self.password.insert(0, 'Password')
 
     def confirm_signup(self):
-        username = self.username_var.get()
-        password = self.password_var.get()
+        name = self.name.get()
+        username = self.username.get()
+        password = self.password.get()
 
         if username == "" or password == "":
             messagebox.showerror("Error", "Username and password are required fields")
         else:
             try:
                 cursor = self.connection.cursor()
-                cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
+                cursor.execute("INSERT INTO users (name, username, password) VALUES (%s,%s,%s)", (name, username, password))
                 self.connection.commit()
                 messagebox.showinfo("Success", "Signup successful")
 
-                self.signup_username_label.pack_forget()
-                self.signup_username_entry.pack_forget()
-                self.signup_password_label.pack_forget()
-                self.signup_password_entry.pack_forget()
-                self.signup_confirm_btn.pack_forget()
-
-                self.username_label.pack()
-                self.username_entry.pack()
-                self.password_label.pack()
-                self.password_entry.pack()
-                self.login_btn.pack()
-                self.signup_btn.pack()
+                try:
+                    self.frame1.pack_forget()
+                    self.frame.pack()
+                except:
+                    print("Error in doing Deletion of Framing!")
 
             except Error as e:
                 print("Error occurred while signing up:", e)
                 messagebox.showerror("Error", "Failed to signup")
 
 
-
-
 def open_login_signup_system():
     root = tk.Tk()
     obj = LoginSignupSystem(root)
     root.mainloop()
+
+
 open_login_signup_system()
-
-

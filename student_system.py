@@ -463,4 +463,4 @@ def open_student_system():
     root = tk.Tk()
     sms = StudentManagementSystem(root)
     root.mainloop()
-open_student_system()
+#open_student_system()

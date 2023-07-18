@@ -163,16 +163,16 @@ namespace eval ttk::theme::azure-light {
             }
         }
 
-        ttk::style layout Card.TFrame {
+        ttk::style layout Card.Tself.frame {
             Card.field {
                 Card.padding -expand 1 
             }
         }
 
-        ttk::style layout TLabelframe {
-            Labelframe.border {
-                Labelframe.padding -expand 1 -children {
-                    Labelframe.label -side right
+        ttk::style layout TLabelself.frame {
+            Labelself.frame.border {
+                Labelself.frame.padding -expand 1 -children {
+                    Labelself.frame.label -side right
                 }
             }
         }
@@ -495,8 +495,8 @@ namespace eval ttk::theme::azure-light {
         ttk::style element create Card.field image $I(card) \
             -border 10 -padding 4 -sticky news
 
-        # Labelframe
-        ttk::style element create Labelframe.border image $I(card) \
+        # Labelself.frame
+        ttk::style element create Labelself.frame.border image $I(card) \
             -border 5 -padding 4 -sticky news
         
         # Notebook
