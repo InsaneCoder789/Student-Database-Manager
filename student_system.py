@@ -48,6 +48,9 @@ class StudentManagementSystem:
         self.title = ttk.Label(root, text="Student Management System", font=("bold", 16), style="Title.TLabel")
         self.title.pack(pady=20)
 
+
+        
+
         self.manage_frame = ttk.Frame(root, borderwidth=0, relief="flat", style="Frame.TFrame")
         self.manage_frame.pack(side=tk.LEFT, padx=20, pady=20, expand=True, fill=tk.BOTH)
 
@@ -91,7 +94,7 @@ class StudentManagementSystem:
         self.dob_entry.pack()
 
         self.button_frame = ttk.Frame(self.manage_frame, relief="flat",borderwidth=0, style="Frame.TFrame")
-        self.button_frame.pack(pady=30)
+        self.button_frame.pack(pady=13)
 
         self.add_button = ttk.Button(self.button_frame, text="Add", style="Accent.TButton", command=self.add_student)
         self.add_button.grid(row=0, column=0, padx=5, pady=10)
@@ -164,7 +167,8 @@ class StudentManagementSystem:
 
         self.display_students()
 
-
+    def change_theme(self):
+        print("Button Pressed!")
 
     def move_left(self):
         self.students_tree.xview_scroll(-30, "units")
