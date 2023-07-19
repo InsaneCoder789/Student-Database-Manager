@@ -1,5 +1,5 @@
 # Copyright (c) 2021 rdbende <rdbende@gmail.com>
-
+# Copyright Reserved (c) 2021 by rdbende ...
 # The Azure theme is a beautiful modern ttk theme inspired by Microsoft's fluent design.
 
 package require Tk 8.6

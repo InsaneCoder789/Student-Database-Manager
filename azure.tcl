@@ -11,11 +11,11 @@ proc set_theme {mode} {
 
 		array set colors {
             -fg             "#333333"
-            -bg             "#FF99CC"
+            -bg             "#55aba1"
             -disabledfg     "#333333"
-            -disabledbg     "#FF99CC"
+            -disabledbg     "#55aba1"
             -selectfg       "#333333"
-            -selectbg       "#FF99CC"
+            -selectbg       "#55aba1"
         }
         
         ttk::style configure . \
@@ -52,9 +52,9 @@ proc set_theme {mode} {
             -fg             "#333333"
             -bg             "#FBEAEB"
             -disabledfg     "#333333"
-            -disabledbg     "#FBEAEB"
+            -disabledbg     "#f7f5f5"
             -selectfg       "#333333"
-            -selectbg       "#FBEAEB"
+            -selectbg       "#f7f5f5"
         }
 
 		ttk::style configure . \
