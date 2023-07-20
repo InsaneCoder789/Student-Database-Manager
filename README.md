@@ -7,7 +7,7 @@ Welcome to <bold>Student Data Management System</bold>
   <p>However the GUI is made strictly for prototyping and testing .. Hence Python stopped maintaining the GUI designs.</p>
   But they did make a new module design called "ttk" but that limits the oppurtunities for designing the GUi
 
-  Hence I decided to take some crucial steps and design my GUI like a real app 🌇
+  Here is my take to design Tkinter GUI like a real app 🌇
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
