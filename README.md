@@ -9,6 +9,7 @@ Welcome to <bold>Student Data Management System</bold>
 
   Hence I decided to take some crucial steps and design my GUI like a real app 🌇
 
+------------------------------------------------------------------------------------------------------------------------------------
 
   <bold> Original Tkinter GUI </bold>
 
@@ -23,7 +24,7 @@ This is why u will find half of the folder with TCL files 😅
 
 <bold>Well... This doesn't end here ... 😎</bold>
 
-
+------------------------------------------------------------------------------------------------------------------------------------
 <bold> FEATURES </bold>
  - Super cool Login and Signup System allowing Full ownership of the data only to the ADMIN's
 
@@ -39,7 +40,7 @@ This is why u will find half of the folder with TCL files 😅
    <bold>My Baby No.2 (Green - Black )</bold>  'dark' 🎯
    <img width="1257" alt="Screenshot 2023-07-20 at 1 12 24 PM" src="https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/88f8c424-b621-4361-973a-7f8af7907d92">
 
-   
+ ------------------------------------------------------------------------------------------------------------------------------------  
 Inorder to change between these themes ... Open 'student_system.py' and search for this line 'self.root.tk.call("set_theme", "Light/Dark")' 
 Change that according to the color preference or you can mess with different variations by opening 'azure.tcl' and change the color scheming as per your choice 😊
 
