@@ -12,11 +12,10 @@ Welcome to <bold>Student Data Management System</bold>
 ------------------------------------------------------------------------------------------------------------------------------------
 
   <bold> Original Tkinter GUI </bold>
-
-  ![Screenshot 2023-07-20 at 2 11 01 PM](https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/dff6bffe-60cd-4b06-bbfd-22439da5cc0d)
+  <img src="bg_images/Original-Tk.png"/>
 
   <bold> My Tkinter GUI ( Modded ) </bold>
-  ![image](https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/64de09a7-a10e-4786-a07e-d6992bccfe5f)
+  <img src="bg_images/Modded-Tk.png"/>
 
 
   
@@ -29,16 +28,17 @@ This is why u will find half of the folder with TCL files 😅
  - Super cool Login and Signup System allowing Full ownership of the data only to the ADMIN's
 
    <bold>LOGIN</bold>
-   <img width="1031" alt="Screenshot 2023-07-20 at 1 07 58 PM" src="https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/b200af3e-857b-4b47-8116-c031969617fe">
+   <img src="bg_images/Login_page.png"/>
    <bold>SIGN-UP</bold>
-   ![image](https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/d96f8887-9fe2-45fb-a271-9a3d3f50aaa7)
+   <img src="bg_images/Signup_page.png"/>
 
    <bold>My Baby No.1 ( Pink - White )</bold>  'light' 🌩️
-   <img width="1254" alt="Screenshot 2023-07-20 at 1 10 24 PM" src="https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/1a832397-19c3-42d6-a7e6-2fe36fec9b79">
+   <img src="bg_images/Light-Tk.png"/>
 
 
    <bold>My Baby No.2 (Green - Black )</bold>  'dark' 🎯
-   <img width="1257" alt="Screenshot 2023-07-20 at 1 12 24 PM" src="https://github.com/InsaneCoder789/Student-Database-Manager/assets/83532283/88f8c424-b621-4361-973a-7f8af7907d92">
+   <img src="bg_images/Dark-Tk.png"/>
+
 
  ------------------------------------------------------------------------------------------------------------------------------------  
 Inorder to change between these themes ... Open 'student_system.py' and search for this line 'self.root.tk.call("set_theme", "Light/Dark")' 
