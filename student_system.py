@@ -1,3 +1,4 @@
+#Importing all the modules required for the app to function
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -5,10 +6,11 @@ from tkinter import filedialog
 import csv
 import mysql.connector
 from mysql.connector import Error
+#Install the following package " mysql-connector-python" using "pip install"
 
-class StudentManagementSystem:
-    def __init__(self, root):
-        self.root = root
+class StudentManagementSystem: #Starting the App 
+    def __init__(self, root): #Declaration of the App
+        self.root = root 
         self.root.title("Student Management System")
         self.root.geometry("1250x625")
         self.root.resizable(False, False)
@@ -33,6 +35,8 @@ class StudentManagementSystem:
                 relief=tk.RAISED,
                 padding=10
                 )
+
+        #All Variables 
         self.students = []
         self.Student_Id_var = tk.StringVar()
         self.name_var = tk.StringVar()
@@ -41,19 +45,20 @@ class StudentManagementSystem:
         self.gender_var = tk.StringVar()
         self.contact_var = tk.StringVar()
         self.dob_var = tk.StringVar()
-
         self.search_by = tk.StringVar()
         self.search_txt = tk.StringVar()
 
+
+        #Main Title of the App 
         self.title = ttk.Label(root, text="Student Management System", font=("bold", 16), style="Title.TLabel")
         self.title.pack(pady=20)
 
 
         
-
+        #The frame which contains all the Field Entries like "Name, Email" etc.
         self.manage_frame = ttk.Frame(root, borderwidth=0, relief="flat", style="Frame.TFrame")
         self.manage_frame.pack(side=tk.LEFT, padx=20, pady=20, expand=True, fill=tk.BOTH)
-
+        
         self.manage_title = ttk.Label(self.manage_frame, text="Manage Students", font=("bold", 16), style="Title.TLabel")
         self.manage_title.pack(side=tk.TOP, pady=10)
 
@@ -167,15 +172,14 @@ class StudentManagementSystem:
 
         self.display_students()
 
-    def change_theme(self):
-        print("Button Pressed!")
-
+    
+#helps to move the Treeviw to the Left 
     def move_left(self):
         self.students_tree.xview_scroll(-30, "units")
-
+#helps to move the Treeview to the Right 
     def move_right(self):
         self.students_tree.xview_scroll(30, "units")
-
+#Helps to export the data from the System Manager 
     def export_data(self):
         search_by = self.search_by.get()
         search_text = self.search_txt.get()
@@ -217,7 +221,7 @@ class StudentManagementSystem:
             conn.close()
 
 
-        
+#Helps to import data from a CSV file -- ( Note :-- It will accept only the data file it has exported ..)        
     def import_data(self):
     # Open a file dialog to choose the import file
         file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
@@ -290,7 +294,7 @@ class StudentManagementSystem:
                 messagebox.showerror("Import Error", f"An error occurred while importing data: {str(e)}")
 
 
-
+#This function is used to Add the student to the Treeview and Database 
     def add_student(self):
         if self.Student_Id_var.get() == '' or self.name_var.get() == '' or self.grade_section_var.get() == '':
             messagebox.showerror("Error", "Please fill in all required fields")
@@ -324,7 +328,8 @@ class StudentManagementSystem:
                 messagebox.showinfo("Success", "Student added successfully")
             except Error as e:
                 messagebox.showerror("Error", f"Error while connecting to the database: {e}")
-
+                
+#This function is used to update the student's Record 
     def update_student(self):
         if self.Student_Id_var.get() == '' or self.name_var.get() == '' or self.grade_section_var.get() == '':
             messagebox.showerror("Error", "Please select a student")
@@ -346,6 +351,8 @@ class StudentManagementSystem:
             except Error as e:
                 messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
+    
+#This helps to delete the student's record from the database 
     def delete_student(self):
         if self.Student_Id_var.get() == '':
             messagebox.showerror("Error", "Please select a student")
@@ -367,7 +374,7 @@ class StudentManagementSystem:
                 except Error as e:
                     messagebox.showerror("Error", f"Error while connecting to the database: {e}")
         
-    
+    #This function helps to search the student in the database 
     def search_students(self):
         try:
             connection = self.connect_to_database()
@@ -392,6 +399,8 @@ class StudentManagementSystem:
         except Error as e:
             messagebox.showerror("Error", f"Error while connecting to the database: {e}")
 
+    
+#This is used to display the student records on the Treeview 
     def display_students(self):
         try:
             connection = self.connect_to_database()
@@ -405,7 +414,8 @@ class StudentManagementSystem:
             connection.close()
         except Error as e:
             messagebox.showerror("Error", f"Error while connecting to the database: {e}")
-
+            
+#This helps to delete the Table from the Database 
     def delete_table(self):
         try:
             connection = self.connect_to_database()
@@ -429,7 +439,7 @@ class StudentManagementSystem:
         except Error as e:
             print(f"Error deleting table: {e}")
 
-
+#This selects the row you select on the Treeview 
     def get_selected_row(self, event):
         try:
             selected_row = self.students_tree.focus()
@@ -443,7 +453,7 @@ class StudentManagementSystem:
             self.dob_var.set(values[6])
         except IndexError:
             pass
-
+#This Clears all the entries on the fields 
     def clear_entries(self):
         self.Student_Id_var.set('')
         self.name_var.set('')
@@ -453,6 +463,7 @@ class StudentManagementSystem:
         self.contact_var.set('')
         self.dob_var.set('')
 
+#This Helps to connect the App to the "MySql Server" in your PC/Laptop 
     @staticmethod
     def connect_to_database():
         connection = mysql.connector.connect(
@@ -462,7 +473,8 @@ class StudentManagementSystem:
             database="your_database_name"
         )
         return connection
-
+        
+#A function declared to open the app 
 def open_student_system(): 
     root = tk.Tk()
     sms = StudentManagementSystem(root)
