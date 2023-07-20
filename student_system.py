@@ -453,9 +453,9 @@ class StudentManagementSystem:
     def connect_to_database():
         connection = mysql.connector.connect(
             host="localhost",
-            user="root",
-            password="Rahul@5111",
-            database="student_management_system"
+            user="your_username",
+            password="your_password",
+            database="your_database_name"
         )
         return connection
 
