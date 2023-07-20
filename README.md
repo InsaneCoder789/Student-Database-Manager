@@ -4,10 +4,10 @@ Welcome to <bold>Student Data Management System</bold>
 
 <bold> What's Modded Tkinter GUI ? </bold> 
 - So Basically Tkinter is a GUI interface made with TCL provided by Python itself .
-  However the GUI is made strictly for prototyping and testing .. Hence Python stopped maintaining the GUI designs
-  However they did make a new module design called "ttk" but that limits the oppurtunities for designing the GUi
+  <p>However the GUI is made strictly for prototyping and testing .. Hence Python stopped maintaining the GUI designs.</p>
+  But they did make a new module design called "ttk" but that limits the oppurtunities for designing the GUi
 
-  Hence I decided to take some crucial steps and design my GUI like a real app
+  Hence I decided to take some crucial steps and design my GUI like a real app 🌇
 
 
   <bold> Original Tkinter GUI </bold>
@@ -19,9 +19,9 @@ Welcome to <bold>Student Data Management System</bold>
 
 
   
-  This is why u will find half of the folder with TCL files 😅
+This is why u will find half of the folder with TCL files 😅
 
-Well... This doesn't end here ... 😎
+<bold>Well... This doesn't end here ... 😎</bold>
 
 
 <bold> FEATURES </bold>
