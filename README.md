@@ -12,6 +12,7 @@ Welcome to **Student Data Management System**
 ------------------------------------------------------------------------------------------------------------------------------------
 
   <bold> Original Tkinter GUI </bold>
+  
   <img src="bg_images/Original-Tk.png"/>
 
   <bold> My Tkinter GUI ( Modded ) </bold>
