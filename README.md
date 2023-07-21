@@ -2,7 +2,7 @@ Welcome to **Student Data Management System**
 
 - A super cozy and super flexible Database Management System using Modded Tkinter GUI and MySQL for the Data Management
 
-**What is_ Modded_ Tkinter GUI ?**
+**What is Modded Tkinter GUI ?**
 - So Basically Tkinter is a GUI interface made with TCL provided by Python itself .
   <p>However the GUI is made strictly for prototyping and testing .. Hence Python stopped maintaining the GUI designs.</p>
   But they did make a new module design called "ttk" but that limits the oppurtunities for designing the GUi
